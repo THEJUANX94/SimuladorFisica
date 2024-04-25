@@ -1,5 +1,8 @@
 from math import pi
 import pygame
+from tkinter import ttk
+import tkinter as tk
+from Boton import Button
 
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
@@ -12,6 +15,12 @@ therm_arc_r = [130, 500, 150, 125]
 therm_arc_l = [120, 500, 150, 125]
 thermometer_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
+
+
+
+button_liquids = Button(900, 100, "Escoge el liquido")
+
+
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -21,7 +30,18 @@ while running:
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("white")
+    
 
+    button_liquids.draw(screen)
+    button_liquids.update()
+    if(button_liquids.clicked):
+        main_window = tk.Tk()
+        main_window.config(width=300, height=200)
+        main_window.title("Combobox")
+        combo = ttk.Combobox()
+        combo.place(x=50, y=50)
+        main_window.mainloop()
+    
     pygame.draw.arc(screen, "black", therm_arc_r, 0, pi / 3, 10)
     pygame.draw.arc(screen, "black", therm_arc_l, (2 * pi)/3, pi, 10)
     pygame.draw.circle(screen, "black", therm_circle_center, 80, 10, False, False, True, True)
