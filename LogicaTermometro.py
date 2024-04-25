@@ -5,8 +5,7 @@ data = pd.read_excel(path)
 
 def getliquidList():
     
-    liquidlist = data['Líquido']
+    array = data['Líquido'].to_numpy()
     
-    return liquidlist
-
-print(getliquidList())
+    
+    return array

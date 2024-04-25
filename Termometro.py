@@ -3,6 +3,7 @@ import pygame
 from tkinter import ttk
 import tkinter as tk
 from Boton import Button
+from LogicaTermometro import getliquidList
 
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
@@ -38,7 +39,9 @@ while running:
         main_window = tk.Tk()
         main_window.config(width=300, height=200)
         main_window.title("Combobox")
-        combo = ttk.Combobox()
+        combo = ttk.Combobox(
+                            state="readonly",
+                            values = getliquidList())
         combo.place(x=50, y=50)
         main_window.mainloop()
     
