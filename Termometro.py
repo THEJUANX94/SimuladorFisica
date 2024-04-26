@@ -1,62 +1,52 @@
-from math import pi
-import pygame
+import pygame as pg
 from tkinter import ttk
 import tkinter as tk
 from Boton import Button
 from LogicaTermometro import getliquidList
 
-pygame.init()
-screen = pygame.display.set_mode((1280, 720))
-clock = pygame.time.Clock()
-running = True
-dt = 0
-therm_circle_center = [200, 560]
-therm_rect_center = pygame.Rect(160, 250, 80, 300)
-therm_arc_r = [130, 500, 150, 125]
-therm_arc_l = [120, 500, 150, 125]
-thermometer_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+
+pg.init()
 
 
+screen = pg.display.set_mode((1250, 720))
+pg.display.set_caption('Termómetro Simulador')
+
+
+termometro_img = pg.image.load('temometro.png')
+termometro_rect = termometro_img.get_rect(center=(200, 400))
 
 
 button_liquids = Button(900, 100, "Escoge el liquido")
 
+running = True
+clock = pg.time.Clock()
 
 while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
             running = False
 
-    # fill the screen with a color to wipe away anything from last frame
-    screen.fill("white")
-    
+
+    screen.fill((255, 255, 255))
+
+
+    screen.blit(termometro_img, termometro_rect)
+
 
     button_liquids.draw(screen)
     button_liquids.update()
-    if(button_liquids.clicked):
+
+    if (button_liquids.clicked):
         main_window = tk.Tk()
         main_window.config(width=300, height=200)
-        main_window.title("Combobox")
+        main_window.title("SELECCION DE LIQUIDO")
         combo = ttk.Combobox(
-                            state="readonly",
-                            values = getliquidList())
+            state="readonly",
+            values=getliquidList())
         combo.place(x=50, y=50)
         main_window.mainloop()
-    
-    pygame.draw.arc(screen, "black", therm_arc_r, 0, pi / 3, 10)
-    pygame.draw.arc(screen, "black", therm_arc_l, (2 * pi)/3, pi, 10)
-    pygame.draw.circle(screen, "black", therm_circle_center, 80, 10, False, False, True, True)
-    pygame.draw.rect(screen, "black", therm_rect_center, width=10, border_radius=50, border_top_left_radius=50, border_top_right_radius=50, border_bottom_left_radius=50, border_bottom_right_radius=50)
-    pygame.draw.circle(screen, "black", therm_circle_center, 60)
-    # flip() the display to put your work on screen
-    pygame.display.flip()
 
-    # limits FPS to 60
-    # dt is delta time in seconds since last frame, used for framerate-
-    # independent physics.
-    dt = clock.tick(60) / 1000
+    pg.display.flip()
+    clock.tick(30)
 
-pygame.quit()
-
+pg.quit()
