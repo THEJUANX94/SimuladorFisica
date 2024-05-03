@@ -7,6 +7,7 @@ from LogicaTermometro import *
 from Probeta import Probeta
 from Temperatura_Marcador import TemperaturaMarcador
 from Boton_Aumentar import BotonAumentar
+from Teoria import Teoria
 
 pg.init()
 
@@ -32,10 +33,11 @@ temperatura_estandar = get_temperatura_estandar('Agua')
 temperatura_marcador.update_temperatura(temperatura_estandar)
 probeta.update_liquido('Agua')
 probeta.liquid_color = (135, 206, 235)
-nueva_temperatura = 0
+nueva_temperatura = 20
 nombre_liquido = ''
 
-
+teoria = Teoria(400, 100)
+ultimo_tiempo_ejecucion = time.time()
 tiempo_vaciado = None
 DURACION_VACIADO = 5
 
@@ -76,9 +78,6 @@ while running:
                         temperatura_marcador.update_temperatura(nueva_temperatura)
                         nueva_temperatura = temperatura_marcador.temperatura - 1
                         temperatura_marcador.update_temperatura(nueva_temperatura)
-                        
-                        # Activar el temporizador para el vaciado de la probeta
-                        tiempo_vaciado = time.time() + DURACION_VACIADO
 
             else: temperatura_marcador.update_temperatura(nueva_temperatura)
 
@@ -87,6 +86,9 @@ while running:
         # Vaciar la probeta después de 5 segundos
         probeta.liquid_level = 0
         tiempo_vaciado = None  # Reiniciar el temporizador
+    if time.time() - ultimo_tiempo_ejecucion > 5:
+        teoria.update_text()
+        ultimo_tiempo_ejecucion = time.time()
 
     screen.fill((12,34,63))
 
@@ -147,6 +149,7 @@ while running:
     temperatura_marcador.draw(screen)
     boton_aumentar.draw(screen)
     boton_disminuir.draw(screen)
+    teoria.draw(screen)
     pg.display.flip()
     clock.tick(30)
 
