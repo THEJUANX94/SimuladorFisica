@@ -22,11 +22,18 @@ estufa_img = pg.transform.scale(estufa_img, (250, 250))
 
 button_liquids = Button(900, 100, "Escoge el liquido")
 boton_aumentar = BotonAumentar(806, 555)
+boton_disminuir = BotonAumentar(720, 555, is_plus=False)
 
 probeta = Probeta(750, 290, 50, 200)
 temperatura_marcador = TemperaturaMarcador(310, 290)
 
-
+probeta.liquid_level = 0.8
+temperatura_estandar = get_temperatura_estandar('Agua')
+temperatura_marcador.update_temperatura(temperatura_estandar)
+probeta.update_liquido('Agua')
+probeta.liquid_color = (135, 206, 235)
+nueva_temperatura = 0
+nombre_liquido = ''
 
 
 tiempo_vaciado = None
@@ -47,20 +54,33 @@ while running:
         elif event.type == pg.MOUSEBUTTONDOWN:
             if boton_aumentar.is_clicked(pg.mouse.get_pos()):
                 # Aumentar la temperatura en la cantidad deseada
-                nueva_temperatura = temperatura_marcador.temperatura + 1  # Aumentar en 1 por ejemplo
+                nueva_temperatura = temperatura_marcador.temperatura + 1  # Aumentar en 1
 
-                # Verificar si la temperatura alcanzó el límite máximo para el agua
-                if probeta.nombre_liquido == 'Agua' and nueva_temperatura >= get_temperatura_max('Agua'):
+                # Verificar si la temperatura alcanzó el límite máximo
+                if probeta.nombre_liquido == nombre_liquido and nueva_temperatura >= get_temperatura_max(nombre_liquido):
 
                     probeta.liquid_level = 0.4
                     temperatura_marcador.update_temperatura(nueva_temperatura)
 
                     # Activar el temporizador para el vaciado de la probeta
                     tiempo_vaciado = time.time() + DURACION_VACIADO
+            else: temperatura_marcador.update_temperatura(nueva_temperatura)
 
-                else:
+            if boton_disminuir.is_clicked(pg.mouse.get_pos()):
+                    # Disminuye la temperatura en la cantidad deseada
+                    nueva_temperatura = temperatura_marcador.temperatura - 1  # Disminuye en 1
 
-                    temperatura_marcador.update_temperatura(nueva_temperatura)
+                    # Verificar si la temperatura alcanzó el límite minimo
+                    if nueva_temperatura <= -273.1:
+                        nueva_temperatura = temperatura_marcador.temperatura + 1
+                        temperatura_marcador.update_temperatura(nueva_temperatura)
+                        nueva_temperatura = temperatura_marcador.temperatura - 1
+                        temperatura_marcador.update_temperatura(nueva_temperatura)
+                        
+                        # Activar el temporizador para el vaciado de la probeta
+                        tiempo_vaciado = time.time() + DURACION_VACIADO
+
+            else: temperatura_marcador.update_temperatura(nueva_temperatura)
 
     # Verificar si se debe vaciar la probeta
     if tiempo_vaciado and time.time() >= tiempo_vaciado:
@@ -126,6 +146,7 @@ while running:
     probeta.draw(screen)
     temperatura_marcador.draw(screen)
     boton_aumentar.draw(screen)
+    boton_disminuir.draw(screen)
     pg.display.flip()
     clock.tick(30)
 

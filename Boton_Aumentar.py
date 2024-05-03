@@ -1,7 +1,7 @@
 import pygame as pg
 
 class BotonAumentar:
-    def __init__(self, x, y, radio=12, color=(0, 0, 0)):
+    def __init__(self, x, y, radio=12, color=(0, 0, 0), is_plus = True):
         self.x = x
         self.y = y
         self.radio = radio
@@ -9,7 +9,8 @@ class BotonAumentar:
         self.rect = pg.Rect(x - radio, y - radio, radio * 2, radio * 2)
         self.font = pg.font.Font(None, 24)
         self.text_color = (255, 255, 255)
-        self.text = self.font.render("+", True, self.text_color)
+        symbol = "+" if is_plus else "-"
+        self.text = self.font.render(symbol, True, self.text_color)
         self.text_rect = self.text.get_rect(center=self.rect.center)
 
     def draw(self, screen):
