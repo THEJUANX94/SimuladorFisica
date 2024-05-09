@@ -1,5 +1,6 @@
 import pygame as pg
 import time
+import os
 from tkinter import ttk
 import tkinter as tk
 from Boton import Button
@@ -22,6 +23,7 @@ estufa_rect = estufa_img.get_rect(center=(900, 650))
 estufa_img = pg.transform.scale(estufa_img, (250, 250))
 
 button_liquids = Button(900, 100, "Escoge el liquido")
+button_info = Button(900, 40, "Mas informacion")
 boton_aumentar = BotonAumentar(806, 555)
 boton_disminuir = BotonAumentar(720, 555, is_plus=False)
 
@@ -97,7 +99,9 @@ while running:
     screen.blit(estufa_img, estufa_rect)
 
     button_liquids.draw(screen)
+    button_info.draw(screen)
     button_liquids.update()
+    button_info.update()
 
     if button_liquids.clicked:
         tiempo_vaciado = None
@@ -140,13 +144,30 @@ while running:
                 probeta.liquid_color = (105, 105, 105)  # Gris más oscuro
             elif nombre_liquido == 'Nitrógeno':
                 probeta.liquid_color = (0, 128, 0)  # Verde oscuro
-
-            main_window.destroy()
+                
+        main_window.destroy()
         confirm_button = ttk.Button(main_window, text="Aceptar", command=on_select)
         confirm_button.place(x=100, y=100)
         main_window.mainloop()
+        
+    if button_info.clicked:
+        window = tk.Tk()
+        window.title("Presentation")
 
-
+        def abrir_diapositivas():
+            archivo_ppt = 'Celsius & Fahrenheit_ Temperature Lesson by Slidesgo.pptx'
+            try:
+                # Attempt to open the file using system default application
+                os.startfile(archivo_ppt)
+                window.destroy()
+            except FileNotFoundError:
+                print("Presentation file not found.")
+                window.destroy()
+                              
+        boton_abrir = tk.Button(window, text="Abrir diapositivas", command=abrir_diapositivas)
+        boton_abrir.pack()
+        window.mainloop()
+        
     probeta.draw(screen)
     temperatura_marcador.draw(screen)
     boton_aumentar.draw(screen)
