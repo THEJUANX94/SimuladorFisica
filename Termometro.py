@@ -34,7 +34,7 @@ temperatura_marcador.update_temperatura(temperatura_estandar)
 probeta.update_liquido('Agua')
 probeta.liquid_color = (135, 206, 235)
 nueva_temperatura = 20
-nombre_liquido = ''
+nombre_liquido = 'Agua'
 
 teoria = Teoria(400, 100)
 ultimo_tiempo_ejecucion = time.time()
@@ -57,29 +57,30 @@ while running:
             if boton_aumentar.is_clicked(pg.mouse.get_pos()):
                 # Aumentar la temperatura en la cantidad deseada
                 nueva_temperatura = temperatura_marcador.temperatura + 1  # Aumentar en 1
-
+                temperatura_marcador.update_temperatura(nueva_temperatura)
                 # Verificar si la temperatura alcanzó el límite máximo
-                if probeta.nombre_liquido == nombre_liquido and nueva_temperatura >= get_temperatura_max(nombre_liquido):
+                
+                if nueva_temperatura >= get_temperatura_max(probeta.nombre_liquido):
 
                     probeta.liquid_level = 0.4
                     temperatura_marcador.update_temperatura(nueva_temperatura)
 
                     # Activar el temporizador para el vaciado de la probeta
                     tiempo_vaciado = time.time() + DURACION_VACIADO
-            else: temperatura_marcador.update_temperatura(nueva_temperatura)
 
-            if boton_disminuir.is_clicked(pg.mouse.get_pos()):
+            elif boton_disminuir.is_clicked(pg.mouse.get_pos()):
+
                     # Disminuye la temperatura en la cantidad deseada
                     nueva_temperatura = temperatura_marcador.temperatura - 1  # Disminuye en 1
-
+                    temperatura_marcador.update_temperatura(nueva_temperatura)
                     # Verificar si la temperatura alcanzó el límite minimo
-                    if nueva_temperatura <= -273.1:
+                    if nueva_temperatura <= get_temperatura_min(probeta.nombre_liquido):
                         nueva_temperatura = temperatura_marcador.temperatura + 1
                         temperatura_marcador.update_temperatura(nueva_temperatura)
                         nueva_temperatura = temperatura_marcador.temperatura - 1
                         temperatura_marcador.update_temperatura(nueva_temperatura)
 
-            else: temperatura_marcador.update_temperatura(nueva_temperatura)
+            else: pass
 
     # Verificar si se debe vaciar la probeta
     if tiempo_vaciado and time.time() >= tiempo_vaciado:
@@ -99,6 +100,7 @@ while running:
     button_liquids.update()
 
     if button_liquids.clicked:
+        tiempo_vaciado = None
         main_window = tk.Tk()
         main_window.config(width=300, height=200)
         main_window.title("SELECCION DE LIQUIDO")
@@ -115,7 +117,7 @@ while running:
             temperatura_estandar = get_temperatura_estandar(nombre_liquido)
             temperatura_marcador.update_temperatura(temperatura_estandar)
             probeta.update_liquido(nombre_liquido)
-            if probeta.liquid_level == 0:
+            if probeta.liquid_level == 0.4:
                 probeta.liquid_level = 0.8
             # Cambiar el color de la probeta según el líquido seleccionado
             if nombre_liquido == 'Agua':
