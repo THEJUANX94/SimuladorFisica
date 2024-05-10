@@ -61,7 +61,7 @@ while running:
                 nueva_temperatura = temperatura_marcador.temperatura + 1  # Aumentar en 1
                 temperatura_marcador.update_temperatura(nueva_temperatura)
                 # Verificar si la temperatura alcanzó el límite máximo
-                
+
                 if nueva_temperatura >= get_temperatura_max(probeta.nombre_liquido):
 
                     probeta.liquid_level = 0.4
@@ -144,12 +144,12 @@ while running:
                 probeta.liquid_color = (105, 105, 105)  # Gris más oscuro
             elif nombre_liquido == 'Nitrógeno':
                 probeta.liquid_color = (0, 128, 0)  # Verde oscuro
-                
-        main_window.destroy()
+
+            main_window.destroy()
         confirm_button = ttk.Button(main_window, text="Aceptar", command=on_select)
         confirm_button.place(x=100, y=100)
         main_window.mainloop()
-        
+
     if button_info.clicked:
         window = tk.Tk()
         window.title("Presentation")
@@ -163,11 +163,25 @@ while running:
             except FileNotFoundError:
                 print("Presentation file not found.")
                 window.destroy()
-                              
+
+
+        def abrir_documento_pdf():
+            archivo_pdf = 'AYUDA.pdf'
+            try:
+                # Attempt to open the PDF file using system default application
+                os.startfile(archivo_pdf)
+                window.destroy()
+            except FileNotFoundError:
+                print("PDF file not found.")
+                window.destroy()
+
         boton_abrir = tk.Button(window, text="Abrir diapositivas", command=abrir_diapositivas)
         boton_abrir.pack()
+
+        boton_abrir_pdf = tk.Button(window, text="Abrir documento PDF", command=abrir_documento_pdf)
+        boton_abrir_pdf.pack()
         window.mainloop()
-        
+
     probeta.draw(screen)
     temperatura_marcador.draw(screen)
     boton_aumentar.draw(screen)
