@@ -138,13 +138,6 @@ while running:
                 probeta.liquid_color = (255, 255, 0)  # Amarillo
             elif nombre_liquido == 'Mercurio':
                 probeta.liquid_color= (169, 169, 169)  # Gris oscuro
-            elif nombre_liquido == 'Helio':
-                probeta.liquid_color = (192, 192, 192)  # Gris
-            elif nombre_liquido == 'Hidrógeno':
-                probeta.liquid_color = (105, 105, 105)  # Gris más oscuro
-            elif nombre_liquido == 'Nitrógeno':
-                probeta.liquid_color = (0, 128, 0)  # Verde oscuro
-
             main_window.destroy()
         confirm_button = ttk.Button(main_window, text="Aceptar", command=on_select)
         confirm_button.place(x=100, y=100)
