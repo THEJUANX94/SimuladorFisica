@@ -20,6 +20,10 @@ ice_texture = pg.image.load("ice.jpg")
 imagen_redimensionada = pg.transform.scale(ice_texture, (50, 160))
 imagen_redimensionada.set_alpha(0)
 
+smoke_texture = pg.image.load("smoke.png")
+imagen_redimensionada2 = pg.transform.scale(smoke_texture, (50, 160))
+imagen_redimensionada2.set_alpha(0)
+
 termometro_rect = termometro_img.get_rect(center=(400, 600))
 termometro_img = pg.transform.scale(termometro_img, (250, 250))
 
@@ -58,7 +62,7 @@ while running:
         elif event.type == pg.MOUSEBUTTONDOWN:
             if boton_aumentar.is_clicked(pg.mouse.get_pos()):
                 # Aumentar la temperatura en la cantidad deseada
-                nueva_temperatura = temperatura_marcador.temperatura + 1  # Aumentar en 1
+                nueva_temperatura = temperatura_marcador.temperatura + 20  # Aumentar en 1
                 temperatura_marcador.update_temperatura(nueva_temperatura)
                 imagen_redimensionada.set_alpha(0)
                 # Verificar si la temperatura alcanzó el límite máximo
@@ -67,7 +71,8 @@ while running:
 
                     probeta.liquid_level = 0.4
                     temperatura_marcador.update_temperatura(nueva_temperatura)
-
+                    temperatura_marcador.update_temperatura(nueva_temperatura)
+                    imagen_redimensionada2.set_alpha(100)
                     # Activar el temporizador para el vaciado de la probeta
                     tiempo_vaciado = time.time() + DURACION_VACIADO
 
@@ -80,6 +85,7 @@ while running:
                         nueva_temperatura = temperatura_marcador.temperatura - 1
                         temperatura_marcador.update_temperatura(nueva_temperatura)
                         imagen_redimensionada.set_alpha(100)
+                        imagen_redimensionada2.set_alpha(0)
                         
                     else:
                         nueva_temperatura = temperatura_marcador.temperatura - 1  # Disminuye en 1
@@ -90,6 +96,7 @@ while running:
     # Verificar si se debe vaciar la probeta
     if tiempo_vaciado and time.time() >= tiempo_vaciado:
         # Vaciar la probeta después de 5 segundos
+        imagen_redimensionada2.set_alpha(0)
         probeta.liquid_level = 0
         tiempo_vaciado = None  # Reiniciar el temporizador
     if time.time() - ultimo_tiempo_ejecucion > 5:
@@ -183,6 +190,7 @@ while running:
     
     probeta.draw(screen)
     screen.blit(imagen_redimensionada, (750, 330))
+    screen.blit(imagen_redimensionada2, (750, 260))
     temperatura_marcador.draw(screen)
     boton_aumentar.draw(screen)
     boton_disminuir.draw(screen)
