@@ -11,13 +11,18 @@ from Boton_Aumentar import BotonAumentar
 from Teoria import Teoria
 
 pg.init()
-
 screen = pg.display.set_mode((1250, 600))
 pg.display.set_caption('Termómetro Simulador')
 
 termometro_img = pg.image.load('temometro.png')
+
+ice_texture = pg.image.load("ice.jpg")
+imagen_redimensionada = pg.transform.scale(ice_texture, (50, 160))
+imagen_redimensionada.set_alpha(0)
+
 termometro_rect = termometro_img.get_rect(center=(400, 600))
 termometro_img = pg.transform.scale(termometro_img, (250, 250))
+
 estufa_img = pg.image.load('ESTUFA.png')
 estufa_rect = estufa_img.get_rect(center=(900, 650))
 estufa_img = pg.transform.scale(estufa_img, (250, 250))
@@ -42,13 +47,8 @@ teoria = Teoria(400, 100)
 ultimo_tiempo_ejecucion = time.time()
 tiempo_vaciado = None
 DURACION_VACIADO = 5
-
-
 running = True
 clock = pg.time.Clock()
-
-
-
 
 
 while running:
@@ -60,6 +60,7 @@ while running:
                 # Aumentar la temperatura en la cantidad deseada
                 nueva_temperatura = temperatura_marcador.temperatura + 1  # Aumentar en 1
                 temperatura_marcador.update_temperatura(nueva_temperatura)
+                imagen_redimensionada.set_alpha(0)
                 # Verificar si la temperatura alcanzó el límite máximo
 
                 if nueva_temperatura >= get_temperatura_max(probeta.nombre_liquido):
@@ -72,16 +73,18 @@ while running:
 
             elif boton_disminuir.is_clicked(pg.mouse.get_pos()):
 
-                    # Disminuye la temperatura en la cantidad deseada
-                    nueva_temperatura = temperatura_marcador.temperatura - 1  # Disminuye en 1
-                    temperatura_marcador.update_temperatura(nueva_temperatura)
                     # Verificar si la temperatura alcanzó el límite minimo
                     if nueva_temperatura <= get_temperatura_min(probeta.nombre_liquido):
                         nueva_temperatura = temperatura_marcador.temperatura + 1
                         temperatura_marcador.update_temperatura(nueva_temperatura)
                         nueva_temperatura = temperatura_marcador.temperatura - 1
                         temperatura_marcador.update_temperatura(nueva_temperatura)
-
+                        imagen_redimensionada.set_alpha(100)
+                        
+                    else:
+                        nueva_temperatura = temperatura_marcador.temperatura - 1  # Disminuye en 1
+                        temperatura_marcador.update_temperatura(nueva_temperatura)
+                        imagen_redimensionada.set_alpha(0)
             else: pass
 
     # Verificar si se debe vaciar la probeta
@@ -92,16 +95,18 @@ while running:
     if time.time() - ultimo_tiempo_ejecucion > 5:
         teoria.update_text()
         ultimo_tiempo_ejecucion = time.time()
-
+                        
     screen.fill((12,34,63))
 
     screen.blit(termometro_img, termometro_rect)
     screen.blit(estufa_img, estufa_rect)
-
+    
     button_liquids.draw(screen)
     button_info.draw(screen)
     button_liquids.update()
     button_info.update()
+    
+    
 
     if button_liquids.clicked:
         tiempo_vaciado = None
@@ -174,8 +179,10 @@ while running:
         boton_abrir_pdf = tk.Button(window, text="Abrir documento PDF", command=abrir_documento_pdf)
         boton_abrir_pdf.pack()
         window.mainloop()
-
+    
+    
     probeta.draw(screen)
+    screen.blit(imagen_redimensionada, (750, 330))
     temperatura_marcador.draw(screen)
     boton_aumentar.draw(screen)
     boton_disminuir.draw(screen)
