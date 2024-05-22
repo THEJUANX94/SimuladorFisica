@@ -10,7 +10,6 @@ from Temperatura_Marcador import TemperaturaMarcador
 from Boton_Aumentar import BotonAumentar
 from Teoria import Teoria
 
-# Variable de control para verificar si el botón ENTRAR ha sido presionado
 entrar_presionado = False
 
 def mostrar_bienvenida():
@@ -50,7 +49,7 @@ def mostrar_bienvenida():
                            bg='white', font=("Arial", 12))
     label_texto.pack(pady=10)
 
-    # Agregar botones con bordes
+
     boton_entrar = tk.Button(ventana_bienvenida, text="ENTRAR", command=on_enter, bg='darkblue', fg='white',
                              font=("Arial", 12), relief='sunken', borderwidth=1)
     boton_entrar.pack(pady=10)
@@ -58,7 +57,6 @@ def mostrar_bienvenida():
     boton_teoria = tk.Button(ventana_bienvenida, text="TEORÍA", command=abrir_diapositivas, bg='darkblue', fg='white',
                              font=("Arial", 12), relief='sunken', borderwidth=1)
     boton_teoria.pack(pady=10)
-   #groove, raised, ridge, solid, or sunken
     boton_tutorial = tk.Button(ventana_bienvenida, text="TUTORIAL DE LA APP", command=abrir_tutorial, bg='darkblue', fg='white',
                                font=("Arial", 12), relief='sunken', borderwidth=1)
     boton_tutorial.pack(pady=10)
@@ -70,10 +68,10 @@ def mostrar_bienvenida():
 
     ventana_bienvenida.mainloop()
 
-# Mostrar la pantalla de bienvenida
+
 mostrar_bienvenida()
 
-# Verificar si se presionó el botón ENTRAR antes de ejecutar el resto del programa
+
 if entrar_presionado:
     pg.init()
     screen = pg.display.set_mode((1150, 600))
@@ -126,11 +124,11 @@ if entrar_presionado:
                 running = False
             elif event.type == pg.MOUSEBUTTONDOWN:
                 if boton_aumentar.is_clicked(pg.mouse.get_pos()):
-                    # Aumentar la temperatura en la cantidad deseada
-                    nueva_temperatura = temperatura_marcador.temperatura + 20  # Aumentar en 20
+
+                    nueva_temperatura = temperatura_marcador.temperatura + 20
                     temperatura_marcador.update_temperatura(nueva_temperatura)
                     imagen_redimensionada.set_alpha(0)
-                    # Verificar si la temperatura alcanzó el límite máximo
+
                     if nueva_temperatura >= get_temperatura_max(probeta.nombre_liquido):
                         probeta.liquid_level = 0.4
                         temperatura_marcador.update_temperatura(nueva_temperatura)
@@ -139,7 +137,7 @@ if entrar_presionado:
                         tiempo_vaciado = time.time() + DURACION_VACIADO
 
                 elif boton_disminuir.is_clicked(pg.mouse.get_pos()):
-                    # Verificar si la temperatura alcanzó el límite mínimo
+
                     if nueva_temperatura <= get_temperatura_min(probeta.nombre_liquido):
                         nueva_temperatura = temperatura_marcador.temperatura + 1
                         temperatura_marcador.update_temperatura(nueva_temperatura)
@@ -154,12 +152,12 @@ if entrar_presionado:
                 else:
                     pass
 
-        # Verificar si se debe vaciar la probeta
+
         if tiempo_vaciado and time.time() >= tiempo_vaciado:
-            # Vaciar la probeta después de 5 segundos
+
             imagen_redimensionada2.set_alpha(0)
             probeta.liquid_level = 0
-            tiempo_vaciado = None  # Reiniciar el temporizador
+            tiempo_vaciado = None
 
         if time.time() - ultimo_tiempo_ejecucion > 5:
             teoria.update_text()

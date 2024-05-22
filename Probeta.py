@@ -23,19 +23,19 @@ class Probeta:
         self.nombre_liquido_border_width = 2
 
     def draw(self, screen):
-        # Dibujar la probeta con esquinas redondeadas
+
         probeta_rect = pg.Rect(self.x, self.y, self.width, self.height)
         pg.draw.rect(screen, self.fill_color, probeta_rect, border_radius=self.border_radius)
 
-        # Dibujar el líquido encima del fondo blanco
+
         liquid_height = int(self.height * self.liquid_level)
         liquid_rect = pg.Rect(self.x, self.y + self.height - liquid_height, self.width, liquid_height)
         pg.draw.rect(screen, self.liquid_color, liquid_rect, border_radius=self.border_radius)
 
-        # Dibujar los bordes de la probeta con esquinas redondeadas
+
         pg.draw.rect(screen, self.border_color, probeta_rect, self.border_width, border_radius=self.border_radius)
 
-        # Mostrar el nombre del líquido seleccionado en un recuadro
+
         if self.nombre_liquido:
 
             nombre_liquido_text = self.nombre_liquido_font.render(f"Líquido: {self.nombre_liquido}", True, self.nombre_liquido_text_color)
