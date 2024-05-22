@@ -12,19 +12,34 @@ class Teoria:
         self.color = color
         self.rect = pg.Rect(x, y, 10, 10)
         self.font = pg.font.Font(None, 24)
+        self.title_font = pg.font.Font(None, 36)  # Fuente para el título
+        self.title_text = self.title_font.render("TEMPERATURA DE LIQUIDOS", True, (255, 255, 255))
         self.text_color = (255, 255, 255)
-        self.text = self.font.render(lista_teoria[0], True, self.text_color)
-        self.text_rect = self.text.get_rect(center=self.rect.center)
-        self.a = 1
+        self.texts = [self.font.render(line, True, self.text_color) for line in lista_teoria]
+        self.current_index = 0
+        self.fade_timer = 0
+        self.line_spacing = 30
+        self.text_y = 120
 
     def draw(self, screen):
         pg.draw.rect(screen, self.color, self.rect)
-        screen.blit(self.text, self.text_rect)
-    
+
+
+        screen.blit(self.title_text, (20, 20))
+
+
+        if self.current_index < len(self.texts):
+            screen.blit(self.texts[self.current_index], (20, self.text_y))
+        if self.current_index + 1 < len(self.texts):
+            screen.blit(self.texts[self.current_index + 1], (20, self.text_y + self.line_spacing))
+
     def update_text(self):
-        if(self.a <= len(lista_teoria)-1):
-            self.text = self.font.render(lista_teoria[self.a], True, self.text_color)
-            self.a += 1
-        else:
-            self.a = 0
-            self.text = self.font.render(lista_teoria[self.a], True, self.text_color)
+
+        self.current_index += 2
+        if self.current_index >= len(self.texts):
+            self.current_index = 0
+
+
+
+
+
