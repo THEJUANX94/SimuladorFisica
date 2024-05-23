@@ -211,8 +211,8 @@ if entrar_presionado:
 
         probeta.draw(screen)
         temperatura_marcador.draw(screen)
-        screen.blit(imagen_redimensionada, (655, 360))
-        screen.blit(imagen_redimensionada2, (655, 360))
+        screen.blit(imagen_redimensionada, (750, 330))
+        screen.blit(imagen_redimensionada2, (750, 330))
         teoria.draw(screen)
         boton_aumentar.draw(screen)
         boton_disminuir.draw(screen)
