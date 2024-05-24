@@ -19,11 +19,11 @@ def mostrar_bienvenida():
         ventana_bienvenida.destroy()
 
     def abrir_diapositivas():
-        archivo_ppt = 'Celsius & Fahrenheit_ Temperature Lesson by Slidesgo.pptx'
+        archivo_pdf = 'PresentacionTemperatura.pdf'
         try:
-            os.startfile(archivo_ppt)
+            os.startfile(archivo_pdf)
         except FileNotFoundError:
-            messagebox.showerror("Error", "El archivo de diapositivas no se encontró.")
+            messagebox.showerror("Error", "El archivo PDF no se encontró.")
 
     def abrir_tutorial():
         archivo_pdf = 'AYUDA.pdf'
