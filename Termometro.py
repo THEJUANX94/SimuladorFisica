@@ -197,10 +197,14 @@ if entrar_presionado:
                     probeta.liquid_color = (0, 255, 255)  # Azul celeste
                 elif nombre_liquido == 'Acetona':
                     probeta.liquid_color = (132, 112, 255)  # Azul púrpura
+                elif nombre_liquido =='Aceite de oliva':
+                    probeta.liquid_color=(255,255,0)
                 elif nombre_liquido == 'Etanol':
                     probeta.liquid_color = (173, 216, 230)  # Azul claro
                 elif nombre_liquido == 'Metanol':
                     probeta.liquid_color = (135, 206, 235)  # Azul
+                elif nombre_liquido=='Mercurio':
+                    probeta.liquid_color=(128,128,128)
 
             btn = tk.Button(main_window, text="Seleccionar", command=lambda: [on_select(), main_window.destroy()])
             btn.place(x=120, y=100)
